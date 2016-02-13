@@ -14,13 +14,10 @@ public class HyperPoint {
 		this.y = y;
 	}
 
-	// Calculates the distance between two points.
-	protected static double distance(HyperPoint p, HyperPoint centroid) {
-	//	return Math.sqrt(Math.pow((centroid.getY() - p.getY()), 2) + Math.pow((centroid.getX() - p.getX()), 2));
+	protected static double distanceBetweenTwoPoints(HyperPoint p, HyperPoint centroid) {
 		return Math.sqrt(Math.pow((centroid.y - p.y), 2) + Math.pow((centroid.x - p.x), 2));
 	}
 
-	// Creates random point
 	protected static HyperPoint createRandomPoint(int min, int max) {
 		Random r = new Random();
 		double x = min + (max - min) * r.nextDouble();
@@ -34,9 +31,5 @@ public class HyperPoint {
 			points.add(createRandomPoint(min, max));
 		}
 		return points;
-	}
-
-	public String toString() {
-		return "(" + x + "," + y + ")";
 	}
 }

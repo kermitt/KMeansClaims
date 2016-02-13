@@ -10,11 +10,12 @@ public class KMeans {
  
 
     private int NUM_CLUSTERS = 3;    
-    //Number of Points
     private int NUM_POINTS = 100;
     //Min and Max X and Y
+
+    
     private static final int MIN_COORDINATE = 0;
-    private static final int MAX_COORDINATE = 10;
+    private static final int MAX_COORDINATE = 100;
     
     private List <HyperPoint>points;
     private List <HyperCluster>clusters;
@@ -51,28 +52,8 @@ public class KMeans {
     	}
 		return state;
     }
-  /*  
-	private void plotClusters() {
-		String out = ""; 
-		
-		for (int i = 0; i < NUM_CLUSTERS; i++) {
-    		out += "\t" + clusters.get(i).points.size();
-    	}
-    }
-*/
-    
- /*
-	private void plotClusters() {
-		for (int i = 0; i < NUM_CLUSTERS; i++) {
-    		//HyperCluster c = clusters.get(i);
-    		//c.plotCluster();
-    		clusters.get(i).describe();
-    	}
-    }
-*/    
 	//The process to calculate the K Means, with iterating method.
     public void calculate() {
-//        boolean finish = false;
     	boolean keepAlive = true;
     	int limit = 1000;
         int iteration = 0;
@@ -86,16 +67,15 @@ public class KMeans {
         	calculateNewCentroids();
         	List <HyperPoint>currentCentroids = getCentroids();
         	
-        	//Calculates total distance between new and old Centroids
+        	//Total distance between new and old centroids
         	double distance = 0;
         	for(int i = 0; i < lastCentroids.size(); i++) {
-        		distance += HyperPoint.distance(lastCentroids.get(i),currentCentroids.get(i));
+        		distance += HyperPoint.distanceBetweenTwoPoints(lastCentroids.get(i),currentCentroids.get(i));
         	}
         	String state = "ith=" + iteration + "\t";
         	state += "state: " + getContext()  + "\t";         
         	state += "distance=" + distance; 
         	Caller.note( state );
-        	
         	
         	if(distance == 0) {
         		keepAlive = false;
@@ -126,7 +106,7 @@ public class KMeans {
         	min = max;
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	HyperCluster c = clusters.get(i);
-                distance = HyperPoint.distance(point, c.centroid);
+                distance = HyperPoint.distanceBetweenTwoPoints(point, c.centroid);
                 if(distance < min){
                     min = distance;
                     cluster_index = i;
