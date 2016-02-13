@@ -36,17 +36,11 @@ public class KMeans {
     	//Create Points
     	points = HyperPoint.createRandomPoints(MIN_COORDINATE,MAX_COORDINATE,NUM_POINTS);
     	
-    	//Create Clusters
-    	//Set Random Centroids
     	for (int i = 0; i < NUM_CLUSTERS; i++) {
     		HyperCluster cluster = new HyperCluster(i);
-    		HyperPoint centroid = HyperPoint.createRandomPoint(MIN_COORDINATE,MAX_COORDINATE);
-    		cluster.setCentroid(centroid);
+    		cluster.centroid = HyperPoint.createRandomPoint(MIN_COORDINATE,MAX_COORDINATE);
     		clusters.add(cluster);
     	}
-    	
-    	//Print Initial state
-    	//plotClusters();
     }
     
     
@@ -78,24 +72,18 @@ public class KMeans {
 */    
 	//The process to calculate the K Means, with iterating method.
     public void calculate() {
-        boolean finish = false;
+//        boolean finish = false;
+    	boolean keepAlive = true;
+    	int limit = 1000;
         int iteration = 0;
         
-        // Add in new data, one at a time, recalculating centroids with each new one. 
-        while(!finish) {
-        	//Clear cluster state
-        	clearClusters();
-        	
-        	List <HyperPoint>lastCentroids = getCentroids();
-        	
-        	//Assign points to the closer cluster
-        	assignCluster();
-            
-            //Calculate new centroids.
-        	calculateCentroids();
-        	
+        while( keepAlive && iteration < limit ) {
         	iteration++;
-        	
+
+        	clearClustersState();
+        	List <HyperPoint>lastCentroids = getCentroids();
+        	assignPointsToNearestCluster();
+        	calculateNewCentroids();
         	List <HyperPoint>currentCentroids = getCentroids();
         	
         	//Calculates total distance between new and old Centroids
@@ -103,10 +91,6 @@ public class KMeans {
         	for(int i = 0; i < lastCentroids.size(); i++) {
         		distance += HyperPoint.distance(lastCentroids.get(i),currentCentroids.get(i));
         	}
-        	//System.out.println("#################");
-        	//System.out.println("Iteration: " + iteration);
-        	//System.out.println("Centroid distances: " + distance);
-        	//plotClusters();
         	String state = "ith=" + iteration + "\t";
         	state += "state: " + getContext()  + "\t";         
         	state += "distance=" + distance; 
@@ -114,67 +98,60 @@ public class KMeans {
         	
         	
         	if(distance == 0) {
-        		finish = true;
+        		keepAlive = false;
         	}
         }
     }
     
-    private void clearClusters() {
+    private void clearClustersState() {
     	for(HyperCluster cluster : clusters) {
-    		cluster.clear();
+    		cluster.points.clear();
     	}
     }
     
     private List<HyperPoint> getCentroids() {
     	List <HyperPoint>centroids = new ArrayList<HyperPoint>(NUM_CLUSTERS);
     	for(HyperCluster cluster : clusters) {
-    		HyperPoint aux = cluster.getCentroid();
-    		HyperPoint point = new HyperPoint(aux.getX(),aux.getY());
-    		centroids.add(point);
+    		centroids.add( new HyperPoint( cluster.centroid.x, cluster.centroid.y));
     	}
     	return centroids;
     }
     
-    private void assignCluster() {
-        double max = Double.MAX_VALUE;
-        double min = max; 
-        int cluster = 0;                 
+    private void assignPointsToNearestCluster() {
+        double min, max = Double.MAX_VALUE;
+        int cluster_index = 0;                 
         double distance = 0.0; 
         
         for(HyperPoint point : points) {
         	min = max;
             for(int i = 0; i < NUM_CLUSTERS; i++) {
             	HyperCluster c = clusters.get(i);
-                distance = HyperPoint.distance(point, c.getCentroid());
+                distance = HyperPoint.distance(point, c.centroid);
                 if(distance < min){
                     min = distance;
-                    cluster = i;
+                    cluster_index = i;
                 }
             }
-            point.setCluster(cluster);
-            clusters.get(cluster).addPoint(point);
+            clusters.get(cluster_index).points.add(point);
         }
     }
     
-    private void calculateCentroids() {
+    private void calculateNewCentroids() {
         for(HyperCluster cluster : clusters) {
             double sumX = 0;
             double sumY = 0;
-            // finch
-            List<HyperPoint> list = cluster.getPoints();
+            List<HyperPoint> list = cluster.points;
             int n_points = list.size();
             
             for(HyperPoint point : list) {
-            	sumX += point.getX();
-                sumY += point.getY();
+            	sumX += point.x;
+                sumY += point.y;
             }
             
-            HyperPoint centroid = cluster.getCentroid();
+            HyperPoint centroid = cluster.centroid;
             if(n_points > 0) {
-            	double newX = sumX / n_points;
-            	double newY = sumY / n_points;
-                centroid.setX(newX);
-                centroid.setY(newY);
+            	centroid.x = sumX / n_points;
+            	centroid.y = sumY / n_points;
             }	
         }
     }
