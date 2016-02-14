@@ -1,12 +1,50 @@
 package common.cluster;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import common.Caller;
 
 public class ClusterTest { 
     public static void main(String[] args) {
-    	simpleTestRun();
+    	//simpleTestRun();
+    	
+    	
+    	
     	Caller.log("The end");
     }
+    
+    private static boolean twentyPoints_threeClusters() {
+    	
+    	List<HyperPoint> points = new ArrayList<HyperPoint>();
+
+		points.add(new HyperPoint(0.4729120327131837 ,-0.35291370286267876));
+		points.add(new HyperPoint(-0.11622645808069088 ,-0.861974038583607));
+		points.add(new HyperPoint(0.3620376953309681 ,-0.7939160442059567));
+		points.add(new HyperPoint(0.9416443313746354 ,0.0019767313521603658));
+		points.add(new HyperPoint(0.5708753853323103 ,-0.7132492450805858));
+		points.add(new HyperPoint(0.4162937597882319 ,-0.5137675987210792));
+		points.add(new HyperPoint(-0.025530056748800378 ,-0.7069428122635821));
+		points.add(new HyperPoint(0.7867907828393772 ,-0.3247880879149898));
+		points.add(new HyperPoint(0.2986523327887409 ,-0.8180446082561099));
+		points.add(new HyperPoint(0.24540389229342363 ,0.9456182334570411));
+		points.add(new HyperPoint(0.059480113667125245 ,0.6511968109509425));
+		points.add(new HyperPoint(0.2008927399787317 ,0.8194040934879718));
+		points.add(new HyperPoint(-0.10939911414912418 ,0.7794746230214593));
+		points.add(new HyperPoint(-0.45145889144454476 ,0.8839335934278323));
+		points.add(new HyperPoint(-0.5218136709538208 ,0.3663552914684478));
+		points.add(new HyperPoint(-0.37350351428269435 ,0.4503137537955939));
+		points.add(new HyperPoint(-0.9847441650282387 ,-0.349082652613262));
+		points.add(new HyperPoint(-0.9761321230904221 ,-0.5924191043621558));
+		points.add(new HyperPoint(-0.9818768233701178 ,0.029584544776639188));
+		points.add(new HyperPoint(-0.590495478461607 ,-0.5967563278634866));
+		
+		
+		boolean isOk = false; 
+
+		return isOk; 
+    }
+    
     private static boolean simpleTestRun() {
     	
 
@@ -23,14 +61,14 @@ public class ClusterTest {
     	boolean show_state = true; 
     	
     	kmeans.calculate( show_state );
-
     	
-    	boolean show_everything = false; 
+    	boolean show_everything = true; 
     	if ( show_everything ) { 
+        	Caller.note("--------- START -----------");
     		String everything = getContext_ofThePoints( kmeans ); 
     		Caller.log( everything );
+        	Caller.note("---------- END ----------");
     	}
-    	
     	
     	int total_points = 0;
     	for ( HyperCluster cluster : kmeans.clusters) {
@@ -39,7 +77,6 @@ public class ClusterTest {
     	boolean isOk = number_of_points == total_points; 
     	Caller.log( isOk, " total points " + total_points  );
     	return isOk ; 
-    	
     }    
     
     private static String getContext_ofThePoints( KMeans kmeans) { 

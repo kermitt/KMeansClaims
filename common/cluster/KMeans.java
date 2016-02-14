@@ -8,8 +8,8 @@ import common.cluster.HyperPoint;
 
 public class KMeans {
 
-	private int number_of_clusters, number_of_points = -1;
-	private double min_coordinate, max_coordinate = -1;
+	private int number_of_clusters, number_of_points;
+	private double min_coordinate, max_coordinate;
 	private List<HyperPoint> points = new ArrayList<HyperPoint>();
 
 	public List<HyperCluster> clusters = new ArrayList<HyperCluster>();
@@ -39,7 +39,7 @@ public class KMeans {
 	}
 
 	// not really needed, but sometimes it is nice to peek into the guts,
-	// iteration by iteration - thing of this as a debugger
+	// iteration by iteration - thing of this as a debugger to peek into the imagination
 	private String getContext() {
 		String state = "";
 		for (int i = 0; i < number_of_clusters; i++) {
