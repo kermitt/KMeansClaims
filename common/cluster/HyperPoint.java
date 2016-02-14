@@ -18,14 +18,14 @@ public class HyperPoint {
 		return Math.sqrt(Math.pow((centroid.y - p.y), 2) + Math.pow((centroid.x - p.x), 2));
 	}
 
-	protected static HyperPoint createRandomPoint(int min, int max) {
+	protected static HyperPoint createRandomPoint(double min, double max) {
 		Random r = new Random();
 		double x = min + (max - min) * r.nextDouble();
 		double y = min + (max - min) * r.nextDouble();
 		return new HyperPoint(x, y);
 	}
 
-	protected static List <HyperPoint> createRandomPoints(int min, int max, int number) {
+	protected static List <HyperPoint> createRandomPoints(double min, double max, int number) {
 		List <HyperPoint>points = new ArrayList<HyperPoint>(number);
 		for (int i = 0; i < number; i++) {
 			points.add(createRandomPoint(min, max));
