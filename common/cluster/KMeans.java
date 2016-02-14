@@ -8,9 +8,9 @@ import common.cluster.HyperPoint;
 
 public class KMeans {
 
-	private int number_of_clusters, number_of_points;
-	private double min_coordinate, max_coordinate;
-	private List<HyperPoint> points = new ArrayList<HyperPoint>();
+	private int number_of_clusters;
+//	private double min_coordinate, max_coordinate;
+	private List<HyperPoint> points;// = new ArrayList<HyperPoint>();
 
 	public List<HyperCluster> clusters = new ArrayList<HyperCluster>();
 
@@ -18,28 +18,33 @@ public class KMeans {
 	} // using an 'init' instead of a more 'javaesque' constructor for TDD
 		// purposes
 
-	public void init(int noc, int nop, double minc, double maxc) {
+	public void init(int noc, List<HyperPoint> points) {
 		number_of_clusters = noc;
-		number_of_points = nop;
-		min_coordinate = minc;
-		max_coordinate = maxc;
-
+		//number_of_points = nop;
+		double[] lowhigh = HyperHelper.findLowhigh(points);
+		double min_coordinate = lowhigh[0];
+		double max_coordinate = lowhigh[1];
+		this.points = points;
+		
 		Caller.note("number_of_clusters = " + number_of_clusters);
-		Caller.note("number_of_points   = " + number_of_points);
+		Caller.note("number_of_points   = " + points.size());
 		Caller.note("min_coordinate\t   =" + min_coordinate);
 		Caller.note("max_coordinate\t   = " + max_coordinate);
 		Caller.note("-----------");
 
-		points = HyperPoint.createRandomPoints(min_coordinate, max_coordinate, number_of_points);
+		// points = HyperPoint.createRandomPoints(min_coordinate,
+		// max_coordinate, number_of_points);
+		//points = HyperHelper.createRandomPoints(min_coordinate, max_coordinate,number_of_points);
 		for (int i = 0; i < number_of_clusters; i++) {
 			HyperCluster cluster = new HyperCluster(i);
-			cluster.centroid = HyperPoint.createRandomPoint(min_coordinate, max_coordinate);
+			cluster.centroid = HyperHelper.createRandomPoint(min_coordinate, max_coordinate);
 			clusters.add(cluster);
 		}
 	}
 
 	// not really needed, but sometimes it is nice to peek into the guts,
-	// iteration by iteration - thing of this as a debugger to peek into the imagination
+	// iteration by iteration - thing of this as a debugger to peek into the
+	// imagination
 	private String getContext() {
 		String state = "";
 		for (int i = 0; i < number_of_clusters; i++) {
@@ -66,7 +71,7 @@ public class KMeans {
 			// Total distance between new and old centroids
 			double distance = 0;
 			for (int i = 0; i < lastCentroids.size(); i++) {
-				distance += HyperPoint.distanceBetweenTwoPoints(lastCentroids.get(i), currentCentroids.get(i));
+				distance += HyperHelper.distanceBetweenTwoPoints(lastCentroids.get(i), currentCentroids.get(i));
 			}
 
 			if (show_state) {
@@ -106,7 +111,7 @@ public class KMeans {
 			min = max;
 			for (int i = 0; i < number_of_clusters; i++) {
 				HyperCluster c = clusters.get(i);
-				distance = HyperPoint.distanceBetweenTwoPoints(point, c.centroid);
+				distance = HyperHelper.distanceBetweenTwoPoints(point, c.centroid);
 				if (distance < min) {
 					min = distance;
 					cluster_index = i;

@@ -1,5 +1,7 @@
 package common.cluster;
 
+import java.util.List;
+
 import common.Caller;
 
 public class KMeansDriver {
@@ -14,7 +16,9 @@ public class KMeansDriver {
     	double min_coordinate = -1;
     	double max_coordinate = 1;
     	
-    	kmeans.init(number_of_clusters,number_of_points,min_coordinate,max_coordinate);
+		List < HyperPoint>points = HyperHelper.createRandomPoints(min_coordinate, max_coordinate,number_of_points);
+		
+    	kmeans.init(number_of_clusters, points);
     	
     	
     	boolean show_state = false; 
