@@ -27,8 +27,8 @@ public class HyperHelper {
 
 	public static double[] findLowhigh(List<HyperPoint> points) {
 		double[] lowhigh = new double[2];
-		double most = -999999;
-		double least = 999999;
+		double most = -Double.MAX_VALUE;
+		double least = Double.MAX_VALUE;
 
 		for (HyperPoint p : points) {
 

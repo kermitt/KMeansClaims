@@ -32,9 +32,6 @@ public class KMeans {
 		Caller.note("max_coordinate\t   = " + max_coordinate);
 		Caller.note("-----------");
 
-		// points = HyperPoint.createRandomPoints(min_coordinate,
-		// max_coordinate, number_of_points);
-		//points = HyperHelper.createRandomPoints(min_coordinate, max_coordinate,number_of_points);
 		for (int i = 0; i < number_of_clusters; i++) {
 			HyperCluster cluster = new HyperCluster(i);
 			cluster.centroid = HyperHelper.createRandomPoint(min_coordinate, max_coordinate);
