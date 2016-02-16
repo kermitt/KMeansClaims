@@ -16,7 +16,7 @@ public class SingleRecord {
 	public Boolean after_cure = null;
 	public Boolean during_treatment = null; 
 	public Boolean before_diagnosis = null; 
-	
+
 	public void display() { 
 		String out = ""; 
 		out += "1 person_id\t'" +person_id + "'\n";
@@ -34,8 +34,5 @@ public class SingleRecord {
 		out += "13 before_diagnosis\t'" + before_diagnosis+ "'\n";
 		
 		Caller.log( out );
-		
- 		
-		
 	}
 }

@@ -8,14 +8,17 @@ import common.SingleRecord;
 import common.Library;
 import common.Seen;
 
-public class PopulateFeatures {
+import java.io.Serializable;
+
+public class PopulateFeatures implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	public Map < String, Seen > gender = new HashMap < String, Seen >(); 
 	public Map < String, Seen > ccs_category_id = new HashMap < String, Seen >(); 
 	public Map < String, Seen > drug_label_name = new HashMap < String, Seen >(); 
 	public Map < String, Seen > drug_group_description = new HashMap < String, Seen >(); 
 	
-	public void populate( List < SingleRecord > everything ) {
+	public void populate( List < SingleRecord > everything) {
 
 		for ( SingleRecord record : everything ) {
 			if ( gender.containsKey(record.gender_code )) { 

@@ -45,4 +45,28 @@ public class Library {
 
 		return free_memory;
 	}
+	
+	/* angle! ( DocumentSimilarity ) */
+	public static double vectorCosineSimilarity(double[] control, double[] vector) {
+		double dotProduct = 0.0;
+		double magnitude1 = 0.0;
+		double magnitude2 = 0.0;
+		double cosineSimilarity = 0.0;
+
+		for (int i = 0; i < control.length; i++) {
+			dotProduct += control[i] * vector[i]; // a.b
+			magnitude1 += Math.pow(control[i], 2); // (a^2)
+			magnitude2 += Math.pow(vector[i], 2); // (b^2)
+		}
+
+		magnitude1 = Math.sqrt(magnitude1);// sqrt(a^2)
+		magnitude2 = Math.sqrt(magnitude2);// sqrt(b^2)
+
+		if (magnitude1 != 0.0 | magnitude2 != 0.0) {
+			cosineSimilarity = dotProduct / (magnitude1 * magnitude2);
+		} else {
+			return 0.0;
+		}
+		return cosineSimilarity;
+	}
 }
