@@ -39,6 +39,22 @@ public class KMeans {
 		}
 	}
 
+	public void init_no_prints(int noc, List<HyperPoint> points) {
+		number_of_clusters = noc;
+		//number_of_points = nop;
+		double[] lowhigh = HyperHelper.findLowhigh(points);
+		double min_coordinate = lowhigh[0];
+		double max_coordinate = lowhigh[1];
+		this.points = points;
+		
+		for (int i = 0; i < number_of_clusters; i++) {
+			HyperCluster cluster = new HyperCluster(i);
+			cluster.centroid = HyperHelper.createRandomPoint(min_coordinate, max_coordinate);
+			clusters.add(cluster);
+		}
+	}
+
+	
 	// not really needed, but sometimes it is nice to peek into the guts,
 	// iteration by iteration - thing of this as a debugger to peek into the
 	// imagination

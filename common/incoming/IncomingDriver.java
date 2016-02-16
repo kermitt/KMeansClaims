@@ -16,9 +16,7 @@ import common.cluster.KMeans;
 public class IncomingDriver {
 
 	public static void main(String... strings) {
-
 		Map<String, Person_Aggregated> people = createCollectionOfAggregatedPeople();
-		
 		doCluster( people );
 	}
 
@@ -96,7 +94,21 @@ public class IncomingDriver {
 		
 		return people; 
 	}
+	/*
+	private static List < HyperCluster > doit(List <HyperPoint> points ) {
+		int number_of_clusters = (int)Math.sqrt( points.size() ); 
+		   
+		double[] lowhigh = HyperHelper.findLowhigh(points);
+		KMeans kmeans = new KMeans();
+		kmeans.init(number_of_clusters, points);
 
+		boolean show_state = false;
+		kmeans.calculate(show_state);
+		
+		return kmeans.clusters; 
+	}
+	*/
+	
 	private static void doCluster(Map<String, Person_Aggregated> people) {
 
 		long t1 = System.currentTimeMillis();
@@ -109,16 +121,9 @@ public class IncomingDriver {
 			double y = 0;
 			HyperPoint p = new HyperPoint(x,y);
 			points.add(p);
-			
-		}
-		
-		
+		}		
 		int number_of_clusters = 200;
-		int number_of_points = points.size();
 		double[] lowhigh = HyperHelper.findLowhigh(points);
-//		double min_coordinate = lowhigh[0];
-//		double max_coordinate = lowhigh[1];
-
 
 		kmeans.init(number_of_clusters, points);
 
@@ -129,12 +134,15 @@ public class IncomingDriver {
 
 			int id = kmeans.clusters.get(i).id;
 			int count = kmeans.clusters.get(i).points.size();
-			Caller.note(i + " cluster " + id + " has " + count + " members ");
+			if ( count == 0 ) {
+				// skip it 
+			} else { 
+				Caller.log(i + " cluster " + id + " has " + count + " members ");
+			}
 		}
 
 		long delta = System.currentTimeMillis() - t1;
 
 		Caller.log("The end (ms=" + delta + ")");
 	}
-
 }
