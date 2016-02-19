@@ -1,3 +1,4 @@
+/* 
 package common.incoming;
 
 import java.util.ArrayList;
@@ -40,13 +41,22 @@ public class IncomingDriver {
 			String key = record.person_id;
 
 			if ( key != null) {
+				
+//				drug_group_description					
+//				drug_label_name
+//				gender
+//				ccs_category_id
+
+				
 				if (people.containsKey(record.person_id)) {
 					
 					people.get(key).addVector(pf.drug_group_description.get(record.drug_group_description).riv);
 					// ccs_category_id is breaky 
-					// person.addVector(pf.ccs_category_id.get(record.ccs_category_id).riv);
+					//person.addVector(pf.ccs_category_id.get(record.ccs_category_id).riv);
 					people.get(key).addVector(pf.drug_label_name.get(record.drug_label_name).riv);
 					people.get(key).addVector(pf.gender.get(record.gender_code).riv);
+					
+					
 					
 				} else {
 
@@ -94,20 +104,6 @@ public class IncomingDriver {
 		
 		return people; 
 	}
-	/*
-	private static List < HyperCluster > doit(List <HyperPoint> points ) {
-		int number_of_clusters = (int)Math.sqrt( points.size() ); 
-		   
-		double[] lowhigh = HyperHelper.findLowhigh(points);
-		KMeans kmeans = new KMeans();
-		kmeans.init(number_of_clusters, points);
-
-		boolean show_state = false;
-		kmeans.calculate(show_state);
-		
-		return kmeans.clusters; 
-	}
-	*/
 	
 	private static void doCluster(Map<String, Person_Aggregated> people) {
 
@@ -122,7 +118,8 @@ public class IncomingDriver {
 			HyperPoint p = new HyperPoint(x,y);
 			points.add(p);
 		}		
-		int number_of_clusters = 200;
+
+		int number_of_clusters = (int)Math.sqrt( points.size() ); 
 		double[] lowhigh = HyperHelper.findLowhigh(points);
 
 		kmeans.init(number_of_clusters, points);
@@ -138,6 +135,9 @@ public class IncomingDriver {
 				// skip it 
 			} else { 
 				Caller.log(i + " cluster " + id + " has " + count + " members ");
+				int pid = kmeans.clusters.get(i).id; 
+				List<HyperPoint> mypoints = kmeans.clusters.get(i).points;
+				doChildCluster( mypoints, pid);
 			}
 		}
 
@@ -145,4 +145,28 @@ public class IncomingDriver {
 
 		Caller.log("The end (ms=" + delta + ")");
 	}
+	
+	
+	private static void doChildCluster(List<HyperPoint> points, int pid ) {
+		KMeans kmeans = new KMeans();
+		int number_of_clusters = (int)Math.sqrt( points.size() ); 
+		double[] lowhigh = HyperHelper.findLowhigh(points);
+
+		kmeans.init(number_of_clusters, points);
+
+		boolean show_state = false;
+		kmeans.calculate(show_state);
+
+		for (int i = 0; i < kmeans.clusters.size(); i++) {
+
+			int id = kmeans.clusters.get(i).id;
+			int count = kmeans.clusters.get(i).points.size();
+			if ( count == 0 ) {
+				// skip it 
+			} else { 
+				Caller.note(" pid " + pid + " ith " + i + " cluster " + id + " has " + count + " members ");
+			}
+		}
+	}
 }
+*/

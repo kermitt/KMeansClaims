@@ -74,6 +74,8 @@ public class ReadDataFile {
 		sr.after_cure = Boolean.valueOf(pieces[9]); // bool
 		sr.during_treatment = Boolean.valueOf(pieces[10]); // bool
 		sr.before_diagnosis = Boolean.valueOf(pieces[11]); // bool
+		
+		
 
 		return sr;
 	}

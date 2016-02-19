@@ -16,45 +16,54 @@ public class IncomingDriverTest {
 		getDate_mmddyyyy();
 		readFile();
 		bigLoad_timeTest();
-		populateFeaturesTest(); 
+		populateFeaturesTest();
 		Caller.note("The end");
 	}
-	
+
 	@SuppressWarnings("unused")
-	private static void unrollMap( String which, Map < String, Seen > seen ) { 
+	private static void unrollMap(String which, Map<String, Seen> seen) {
 		Caller.note("***" + which + " ***");
-		int count = 0 ; 
-		for ( String key : seen.keySet()) {
-			Caller.note(++count + "\t" +  seen.get(key).seen + "\t" + key );
+		int count = 0;
+		for (String key : seen.keySet()) {
+			Caller.note(++count + "\t" + seen.get(key).seen + "\t" + key);
 		}
 	}
-	
-	private static boolean populateFeaturesTest() { 
+
+	private static boolean populateFeaturesTest() {
 		ReadDataFile rdf = new ReadDataFile();
 
 		int limit = 1000000;
 		long t1 = System.currentTimeMillis();
-		List<SingleRecord> records = rdf.parseFile(Library.REAL_DATA_FILE, limit);
-		
-		PopulateFeatures pf = new PopulateFeatures(  );
+		List<SingleRecord> records = rdf.parseFile(Library.TEST_DATA_FILE, limit);
+
+		PopulateFeatures pf = new PopulateFeatures();
 		pf.populate(records);
-		
-		//unrollMap("LABEL", pf.drug_label_name);
-		//unrollMap("DESC", pf.drug_group_description);
-		//unrollMap("GENDER", pf.gender);
-		//unrollMap("CCS CAT",  pf.ccs_category_id);
+
+//		unrollMap("1 LABEL", pf.drug_label_name);
+//		unrollMap("2 DESC", pf.drug_group_description);
+//		unrollMap("3 GENDER", pf.gender);
+//		unrollMap("4 CCS CAT", pf.ccs_category_id);
+
+		for ( SingleRecord rec : records ) { 
+		//	rec.display();
+		}
 		
 		long delta = System.currentTimeMillis() - t1;
 
-		boolean isOk = true == pf.drug_label_name.size() > 0 
-				== pf.drug_group_description.size() > 0 
-				== pf.gender.size() > 0
-				== pf.ccs_category_id.size() > 0; 
-		
-		Caller.log(isOk, " time delta: " + ( delta ));
+		boolean isOk = true == pf.drug_label_name.size() > 0 == pf.drug_group_description.size() > 0 == pf.gender
+				.size() > 0 == pf.ccs_category_id.size() > 0;
+
+		Caller.log(isOk, " time delta: " + (delta));
+
+		if (!isOk) {
+			Caller.note("FAIL! drug_label_name.size() > 0 ?  : " + pf.drug_label_name.size());
+			Caller.note("FAIL! drug_group_description.size() > 0 ?  : " + pf.drug_group_description.size());
+			Caller.note("FAIL! gender.size() > 0 ? : " + pf.gender.size());
+			Caller.note("FAIL! ccs_category_id..size() > 0 ? : " + pf.ccs_category_id.size());
+		}
 		return isOk;
-		
 	}
+
 	private static boolean bigLoad_timeTest() {
 		ReadDataFile rdf = new ReadDataFile();
 
@@ -65,10 +74,10 @@ public class IncomingDriverTest {
 
 		boolean isOk = false;
 		long too_long = 5000l;
-		if ( records.size() > 0 && delta < too_long		) {
+		if (records.size() > 0 && delta < too_long) {
 			isOk = true;
 		}
-		Caller.log(isOk, "And the time = " + ( delta ) + " and size = " + records.size());
+		Caller.log(isOk, "And the time = " + (delta) + " and size = " + records.size());
 		return isOk;
 	}
 
