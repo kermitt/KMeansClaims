@@ -67,6 +67,8 @@ public class ReadDataFile {
 		sr.ndc_code = pieces[3];
 		sr.drug_label_name = pieces[4];
 		sr.drug_group_description = pieces[5];
+		
+		
 		sr.days_supply_count = Integer.parseInt(pieces[6]); // int
 		sr.filled_date = getDate_mmddyyyy(pieces[7]); // date
 		sr.patient_paid_amount = Double.parseDouble(pieces[8]); // double

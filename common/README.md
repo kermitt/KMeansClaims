@@ -17,4 +17,11 @@ step 2:
 step 3: Roll through the Map < String, Person_Aggregated > people map and form CLUSTERS
 
 
+Currently, the data are: 
+person_id	|	gender_code	|	ccs_category_id	|	ndc_code	|	drug_label_name	|	drug_group_description	|	days_supply_count	|	
+filled_date	|	patient_paid_amount	|	ingredient_cost_paid_amount	|	after_cure	|	during_treatment	|	before_diagnosis		|
+1	|	M	|	29	|	00591352530	|	LIDOCAINE 5 % PATCH	|	DERMATOLOGICALS	|	30	|	12/10/2014	|	33	|	182.53	|	True	|	False	|	False		|
+
+
+
 	

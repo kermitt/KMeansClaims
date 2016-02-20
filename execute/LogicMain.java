@@ -31,8 +31,8 @@ public class LogicMain {
 
 		int limit = 1000000;
 		long t1 = System.currentTimeMillis();
-		List<SingleRecord> records = rdf.parseFile(Library.REAL_DATA_FILE, limit);
-//		List<SingleRecord> records = rdf.parseFile(Library.TEST_DATA_FILE, limit);
+//		List<SingleRecord> records = rdf.parseFile(Library.REAL_DATA_FILE, limit);
+		List<SingleRecord> records = rdf.parseFile(Library.TEST_DATA_FILE, limit);
 
 		///// TODO! This ought to came from a .ser file or database or something
 		pf = new PopulateFeatures();
@@ -60,7 +60,7 @@ public class LogicMain {
 		double[] controlRiv = Library.getControlRIV();
 		
 //		Caller.log("people size " + people.size());
-//		int i = 0; 
+		int i = 0; 
 		for (String key : people.keySet()) {
 			count_angle_assignment++;
 
@@ -68,8 +68,8 @@ public class LogicMain {
 			double angle = Library.vectorCosineSimilarity(riv, controlRiv);
 			people.get(key).x = angle;
 			people.get(key).y = 0;
-//			Caller.log( i +"\n" +  people.get( key ).display() );
-//			i++; 
+			Caller.log( i +"\n" +  people.get( key ).display() );
+			i++; 
 			
 			if (count_angle_assignment % 100000 == 0) {
 				Caller.log("Angle assignment passing " + count_angle_assignment);
@@ -86,6 +86,9 @@ public class LogicMain {
 			people.get(key).addVector(pf.drug_label_name.get(record.drug_label_name).riv);
 			people.get(key).addVector(pf.gender.get(record.gender_code).riv);
 
+			people.get(key).addPatient_paid_amount( record.patient_paid_amount);
+			people.get(key).addDaysSuppyCount( record.days_supply_count);
+
 		} else {
 
 			Person_Aggregated person = new Person_Aggregated(key);
@@ -94,10 +97,9 @@ public class LogicMain {
 			person.addVector(pf.drug_label_name.get(record.drug_label_name).riv);
 			person.addVector(pf.gender.get(record.gender_code).riv);
 
-			
-			//?? TODO WORKING HERE 
 			person.addPatient_paid_amount( record.patient_paid_amount);
-//			Caller.note( "PPA? " +  record.patient_paid_amount);
+			person.addDaysSuppyCount( record.days_supply_count);
+			
 			people.put(key, person);
 		}
 	}
